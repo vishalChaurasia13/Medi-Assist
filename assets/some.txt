@@ -1,0 +1,92 @@
+inside db - inside userdoctor - add column username
+
+inside db - inside subquestions update questionid to questionnumber
+
+
+----------------------------------------------doctorpatients.py-----------------------------------------------
+
+def doctorlogin(request):
+   return render(request,"Doctorlogin.html")
+
+
+def doctorpatients(request):
+         try:
+            db, cmd = pool.ConnectionPooling()
+            email = request.POST['email']
+            q="select * from doctors where email='{0}'".format(email)
+            cmd.execute(q)
+            result = cmd.fetchone()
+            request.session['doctor'] = [result['name'],result['doctorid'],result['specialization'],result['mob'],result['email']]
+            if(result):
+
+               q="select * from userdoctor where doctorid='{0}'".format(result['doctorid'])
+               cmd.execute(q)
+               data=cmd.fetchall()
+               print(data)
+
+               if(data):
+                 return render(request,"Doctorpatients.html",{'data':data ,'docname':request.session['doctor'][0], 'docid':request.session['doctor'][1], 'docspl':request.session['doctor'][2]})
+            else:
+               return render(request,"Doctorlogin.html")
+         except Exception as e:
+            print(e)
+
+
+def getpatientscore(request):
+  try:
+   docid = request.GET['docid']
+   userdoctorid = request.GET['userdoctorid']
+
+   print("docid and userdoctorid",docid,userdoctorid)
+   return JsonResponse({'msg':True})
+  except Exception as e:
+     print(e)
+
+
+def showpatientscore(request):
+   try:
+      userdoctorid = request.GET['userdoctorid']
+      docspl = request.GET['docspl']
+      db, cmd = pool.ConnectionPooling()
+      q="select questionno,totalscore from userdiagnose where userdoctorid = '{0}'".format(userdoctorid)
+      cmd.execute(q)
+      result = cmd.fetchall()
+      q="select q.*,group_concat(s.subquestion separator'#') as subquestions from medassist.questions q, subquestions s where q.questionnumber=s.question and q.specializationid='{0}' group by q.questionnumber".format(docspl)
+      cmd.execute(q)
+      questions  = cmd.fetchall()
+      db.close()
+      return JsonResponse({'result': result , 'questions': questions})
+   except Exception as e:
+      print(e)
+      return JsonResponse({'msg':'False'})
+
+
+def prescription(request):
+   db, cmd = pool.ConnectionPooling()
+   q = "select specialization from specialization where specializationid = '{0}'".format(request.session['doctor'][2])
+   cmd.execute(q)
+   spl = cmd.fetchone()
+   username = request.POST['username']
+   usermob = request.POST['usermob']
+   userdate = request.POST['userdate']
+   usertime = request.POST['usertime']
+
+   return render(request,"Prescription.html",{'username':username, 'usermob':usermob,'userdate':userdate,'usertime':usertime,'docname':request.session['doctor'][0], 'docmob':request.session['doctor'][3],'docemail':request.session['doctor'][4],'docspl':spl['specialization']})
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------urls-------------------------------------------------------------------------------------------
+
+
+from . import doctorpatients
+
+
+    path('doctorlogin/',views.doctorlogin),
+    path('doctorpatients',views.doctorpatients),
+    path('getpatientscore/',views.getpatientscore),
+    path('getuserscore/',views.showpatientscore),
+    path('prescription',views.prescription),

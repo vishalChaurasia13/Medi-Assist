@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<style type="text/css">
+    .dig
+    {
+    width: auto;
+    height:auto;
+    background:#7f8fa6;
+    padding:20px;
+    border-radius:10px;
+
+    }
+    .mdig
+    {
+    width: 100%;
+    height:auto;
+    background:#7f8fa6;
+    padding:20px;
+    border-radius:10px;
+
+    }
+    .root
+    {
+    background:#f5f6fa;
+    width:100%;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    }
+    .head{
+    font-size:24px;
+    font-weight: bold;
+    letter-spacing:2px;
+    color:#ffffff;
+    }
+    .thtable{
+        color:#FFF;
+        text-shadow: #7f8fa6;
+        font-weight: bold;
+    }
+
+
+</style>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css"
+  rel="stylesheet"
+/><!-- MDB -->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script>
+</head>
+<body>
+<div class="root">
+   <div class="dig" >
+    <div class="head" >
+        <div style="text-align: center;"><h4>Doctor's List</h4></div>
+        <table class="table align-middle">
+            <thead>
+              <tr>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Id</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Name</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Date Of Birth</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Gender</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Email address</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Specialization</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Picture</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Mobile</th>
+                <th scope="col" style="font-weight:bold;color: #FFF;">Action</th>
+              </tr>
+            </thead>
+            <tbody class="thtable">
+            {% for row in data %}
+              <tr>
+                <th scope="row">{{row.doctorid}}</th>
+                <td style="font-weight:400" >{{row.doctorname}}</td>
+                <td style="font-weight:400" >{{row.dob}}</td>
+                <td style="font-weight:400" >{{row.gender}}</td>
+                <td style="font-weight:400" >{{row.emailaddress}}</td>
+                <td style="font-weight:400" >{{row.specialization}}</td>
+                <td><img
+                        class="img-fluid rounded"
+                        src='/static/{{row.picture}}'
+                        style="width: 100px;"
+                        data-mdb-target="#iconModal"
+                        data-mdb-toggle="modal"
+                        sempicon={{row.picture}}
+                        temid={{row.doctorid}}
+                /></td>
+                <td style="font-weight:400" >{{row.mobile}}</td>
+
+                <td>
+                  <button type="button"  did={{row.doctorid}} dotname={{row.doctorname}} ddob={{row.dob}} demail={{row.emailaddress}} dspl={{row.specialization}} dmob={{row.mobile}} dgen={{row.gender}} class="btnedit btn-white btn-sm px-3"  data-mdb-toggle="modal" data-mdb-target="#exampleModal" >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+
+    </div>
+   </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="head" >
+        <span ><img src="/static/icon.png" width="50px"></span>
+        <span style="padding-left:5px;padding-top:20px;color:black">Update Doctor's Details</span>
+    </div>
+        <button type="button" class="btn-close " data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+   <div class="mdig" >
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="text" id="splid" name="splid" class="form-control form-control-lg" disabled/>
+                   <label class="form-label" for="splid">ID</label>
+               </div>
+
+           </div>
+       </div>
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="text" id="dname" name="dname" class="form-control form-control-lg" />
+                   <label class="form-label" for="dname">Doctor's Name</label>
+               </div>
+
+           </div>
+       </div>
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="text" id="dob" name="dob" class="form-control form-control-lg" />
+                   <label class="form-label" for="dob">Date's of Birth</label>
+               </div>
+
+           </div>
+       </div>
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <div style="color: #ffff">Gender</div>
+                <div class="btn-group">
+                    <input type="radio" value="Male" class="btn-check" name="gender" id="gen" autocomplete="off"/>
+                    <label class="btn btn-white" for="gen">Male</label>
+
+                    <input type="radio" value="Female" class="btn-check" name="gender" id="gen1" autocomplete="off" />
+                    <label class="btn btn-white" for="gen1">Female</label>
+
+                    <input type="radio" value="Other" class="btn-check" name="gender" id="gen2" autocomplete="off" />
+                    <label class="btn btn-white" for="gen2">Other</label>
+                </div>
+               </div>
+
+           </div>
+       </div>
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="text" id="email" name="email" class="form-control form-control-lg"/>
+                   <label class="form-label" for="email">Email Address</label>
+               </div>
+
+           </div>
+       </div>
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="text" id="spl" name="specialization" class="form-control form-control-lg" />
+                   <label class="form-label" for="spl">Specialization</label>
+               </div>
+
+           </div>
+       </div>
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <div class="form-outline form-white">
+                   <input type="number" id="mnumber" name="mnumber" class="form-control form-control-lg"/>
+                   <label class="form-label" for="mnumber">Mobile Number</label>
+               </div>
+
+           </div>
+       </div>
+
+
+
+       <div class="row" style="margin-top:8px;">
+           <div class="col-6">
+               <button type="button" style="width:100%" class="btns btn-light btn" data-mdb-ripple-color="dark">Update</button>
+           </div>
+
+           <div class="col-6">
+               <button type="button" style="width:100%" class="btnr btn-light btn" data-mdb-ripple-color="dark">Delete</button>
+           </div>
+       </div>
+       <div class="row" style="margin-top:8px;">
+           <div class="col-12">
+               <center>
+               <div style="color:#FFFF;align-items:center;" id="msg"></div>
+               </center>
+           </div>
+       </div>
+   </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--model -->
+
+<div aria-hidden="true" aria-labelledby="iconLabel" class="modal fade" id="iconModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="head">
+                    <span><img src="/static/icon.png" width="50px"></span>
+                    <span style="padding-left:5px;padding-top:20px;color:black">Update Doctor's Icon</span>
+                </div>
+                <button aria-label="Close" class="btn-close" data-mdb-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body" style="display:flex; justify-content:center; align-items:center">
+                <div class="mdig">
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-12">
+                                <div class="form-outline form-white">
+                                    <input type="text" id="docid" name="splid" class="form-control form-control-lg" disabled/>
+                                     <label class="form-label" for="docid">ID</label>
+                                </div>
+
+                             </div>
+                        </div>
+                        <div class="row" style="margin-top:8px;">
+                            <div class="col-6" >
+                                <img
+                                    class="rounded-3"
+                                    style="width: 100%;height: 150px "
+                                    id="cuimg"
+                                    alt="Avatar"
+                                />
+                            </div>
+                            <div class="col-6">
+                                <img
+                                    src="/static/temp3.png"
+                                    class="rounded-3"
+                                    style="width: 100%; height: 150px"
+                                    id="seimg"
+                                    alt="Avatar"
+                                />
+                            </div>
+                        </div>
+                            <div class="row">
+                            <div class="col-12" style="margin-top:8px;">
+                                <input class="form-control form-control-lg white" id="inp" name="ic" type="file" />
+                            </div>
+                            </div>
+                            <div class="row" style="margin-top:8px;">
+                                <div class="col-12">
+                                <button type="button" style="width:100%" class="btnupd btn-light btn" data-mdb-ripple-color="dark">Update Icon</button>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top:8px;">
+                            <div class="col-12">
+                                <center>
+                                <div style="color:#FFFF;align-items:center;" id="msg2"></div>
+                                </center>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.btnedit').click(function(){
+        g=$(this).attr('dgen')
+        if(g=='Male'){
+        $('#gen').attr('checked',true)
+        }
+        else if(g=='Female'){
+        $('#gen1').attr('checked',true)
+        }
+        else{
+        $('#gen2').attr('checked',true)
+        }
+        console.log($(this).attr('ddob'))
+        console.log($(this).attr('dotname'))
+        $('#splid').val($(this).attr('did'))
+        $('#dname').val($(this).attr('dotname'))
+        $('#dob').val($(this).attr('ddob'))
+        $('#email').val($(this).attr('demail'))
+        $('#mnumber').val($(this).attr('dmob'))
+        $('#spl').val($(this).attr('dspl'))
+
+
+        $('.btns').click(function(){
+
+            $.getJSON('/doctorrecordupdate',{'did':$('#splid').val(),'dname':$('#dname').val(),'dob':$('#dob').val(),'email':$('#email').val(),'mnumber':$('#mnumber').val(),'dspl':$('#spl').val()},function(data){
+            if (data.result){
+            $('#msg').html('Record Updated')
+            }
+            else{
+            $('#msg').html('Update Failed')
+            }
+
+            })
+
+
+        })
+        $('.btnr').click(function(){
+            $.getJSON('/deletedoctor',{'did':$('#splid').val()},function(data){
+            if(data.result)
+               {
+                $('#msg').html("Record Deleted")
+                }
+            else
+                {
+                    $('#msg').html("Failed To Delete")
+                }
+            })
+        })
+
+    })
+
+
+    $('.btn-close').click(function(){
+            location.href="http://localhost:8000/doctorrecorddisplay"
+    })
+
+   $('.img-fluid').click(function(){
+        $('#cuimg').attr('src','/static/'+$(this).attr('sempicon'))
+        $('#docid').val($(this).attr('temid'))
+   })
+   $('#inp').change(function (event){
+        $('#seimg').attr('src',URL.createObjectURL(event.target.files[0]))
+   })
+
+    $('.btnupd').click(function(){
+        var formData = new FormData();
+        formData.append('id',$('#docid').val());
+        var files=$('#inp')[0].files;
+
+        if(files.length>0){
+            formData.append('icon',files[0])
+
+            $.ajax({
+                url:'/editdoctoricon',
+                headers:{
+                'X-CSRFToken':'{{ csrf_token }}'
+                },
+                type: 'post',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    if(response !=0 ){
+                        $('#msg2').html("Icon Updated")
+                    }
+                    else{
+                        $('#msg2').html("Fail to Updated Icon")
+                    }
+                }
+
+            })
+        }
+    })
+
+
+</script>
+</body>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"></script>
+</html>
